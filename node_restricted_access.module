@@ -5,23 +5,25 @@
  * Contains node_restricted_access.module.
  */
 
-use Drupal\Core\Render\Markup;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
-use Drupal\user\Entity\User;
 
-// /**
-//  * Implements hook_node_access().
-//  */
-// function node_restricted_access_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
-//   if ($operation == 'view') {
-//     if ($entity->hasField('field_restricted_access') && $entity->field_restricted_access->value == 1) {
-//       if (!$account->hasPermission('view restricted only content')) {
-//         return AccessResult::forbidden('Permission to view not allowed.');
-//       }
-//     }
-//   }
-// }
+/**
+ * Implements hook_help().
+ */
+function node_restricted_access_help($route_name, RouteMatchInterface $arg) {
+  switch ($route_name) {
+    // Main module help for the node_restricted_access module.
+    case 'help.page.node_restricted_access':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides the ability to restrict node access based on permission') . '</p>';
+      return $output;
+
+    default:
+  }
+}
 
 /**
  * Implements hook_node_access_records().
