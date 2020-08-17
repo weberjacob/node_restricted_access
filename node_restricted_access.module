@@ -5,19 +5,51 @@
  * Contains mhec_commissioner.module.
  */
 
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Access\AccessResult;
+use Drupal\node\NodeInterface;
+use Drupal\user\Entity\User;
+
+// /**
+//  * Implements hook_node_access().
+//  */
+// function node_restricted_access_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
+//   if ($operation == 'view') {
+//     if ($entity->hasField('field_restricted_access') && $entity->field_restricted_access->value == 1) {
+//       if (!$account->hasPermission('view restricted only content')) {
+//         return AccessResult::forbidden('Permission to view not allowed.');
+//       }
+//     }
+//   }
+// }
 
 /**
- * Implements hook_node_access().
+ * Implements hook_node_access_records().
  */
-function node_restricted_access_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  if ($operation == 'view') {
-    if ($entity->hasField('field_restricted_access') && $entity->field_restricted_access->value == 1) {
-      if (!$account->hasPermission('view restricted only content')) {
-        return AccessResult::forbidden('Permission to view not allowed.');
-      }
+function node_restricted_access_node_access_records(NodeInterface $node) {
+  $grants = [];
+  if ($node->hasField('field_restricted_access') && $node->field_restricted_access->value == 1) {
+    $grants[] = [
+      'realm' => 'node_restricted_access',
+      'gid' => 0,
+      'grant_view' => 1,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'langcode' => 'en',
+    ];
+  }
+  return $grants;
+}
+
+/**
+ * Implements hook_node_grants().
+ */
+function node_restritcted_access_node_grants(AccountInterface $account, $op) {
+  $grants = array();
+  if ($op == 'view') {
+    if ($account->hasPermission('view restricted content')) {
+      $grants['node_restricted_access'] = array($account->id());
     }
   }
+  return $grants;
 }
