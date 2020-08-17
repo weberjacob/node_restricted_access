@@ -1,0 +1,19 @@
+<?php
+/**
+ * @file node_restricted_access.install
+ * Contains install and update functions for node_restricted_access.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function node_restricted_access_install() {
+  node_access_needs_rebuild(TRUE);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function node_restricted_access_uninstall() {
+  node_access_needs_rebuild(TRUE);
+}
