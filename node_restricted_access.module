@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Contains mhec_commissioner.module.
+ */
+
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Access\AccessResult;
+
+/**
+ * Implements hook_node_access().
+ */
+function node_restricted_access_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  if ($operation == 'view') {
+    if ($entity->hasField('field_restricted_access') && $entity->field_restricted_access->value == 1) {
+      if (!$account->hasPermission('view restricted only content')) {
+        return AccessResult::forbidden('Permission to view not allowed.');
+      }
+    }
+  }
+}
