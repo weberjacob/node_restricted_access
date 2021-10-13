@@ -1,5 +1,5 @@
 # Node Restricted Access
-<img src="https://badgen.net/badge/version/8.x-1.0.0/cyan?icon=github" alt="Version: 8.x-1.0"/>
+<img src="https://badgen.net/badge/version/2.0/cyan?icon=github" alt="Version: 2.0"/>
 
 Custom module that adds a permission to allow specific roles to view restricted content.
 
